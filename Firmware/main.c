@@ -48,6 +48,15 @@ static uint8_t* USBD_HID_GetPos (void)
 	static int8_t HID_Buffer[5] = {0};
 	HID_Buffer[0] = 0x00;
 
+	for(int i= 4; i < TX_CHANNELS; ++i){
+		if(ppm_data[i] > PPM_MAX/2 + PPM_MIN){
+			HID_Buffer[0] |= (1 << (i-4));
+		}
+		else {
+			HID_Buffer[0] &= ~(1 << (i-4));
+		}
+	}
+
 
 	for(int i= 0; i< 4; ++i){
 		int8_t out_val = mapPPMtoUSB(ppm_data[i]);
