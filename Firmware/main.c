@@ -107,7 +107,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
 	else {
 		ppm_data[curr_channel] = ppm;
 		++curr_channel;
-		if(curr_channel == TX_CHANNELS+1){
+		if(curr_channel == TX_CHANNELS){
 			curr_channel = 0;
 		}
 	}
