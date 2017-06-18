@@ -25,7 +25,7 @@ along with ppm2usb.  If not, see <http://www.gnu.org/licenses/>.
 extern int8_t USBD_CUSTOM_HID_SendReport_FS ( uint8_t *report,uint16_t len);
 extern TIM_HandleTypeDef htim1;
 
-#define TX_CHANNELS 4
+#define TX_CHANNELS 8
 
 uint32_t ppm_data[TX_CHANNELS];
 uint32_t last_ppm_time = 0;
@@ -43,13 +43,13 @@ int8_t mapPPMtoUSB(uint32_t val){
 	return (val - PPM_MIN) * (USB_MAX-USB_MIN)/(PPM_MAX-PPM_MIN) + USB_MIN;
 }
 
-static uint8_t *USBD_HID_GetPos (void)
+static uint8_t* USBD_HID_GetPos (void)
 {
-	static int8_t HID_Buffer[TX_CHANNELS+1] = {0};
-	HID_Buffer[0] = 0x0F;
+	static int8_t HID_Buffer[5] = {0};
+	HID_Buffer[0] = 0x00;
 
 
-	for(int i= 0; i< TX_CHANNELS; ++i){
+	for(int i= 0; i< 4; ++i){
 		int8_t out_val = mapPPMtoUSB(ppm_data[i]);
 		HID_Buffer[i+1] = out_val;
 	}
@@ -126,6 +126,6 @@ int main(){
 
 
 	while(42){
-		USBD_CUSTOM_HID_SendReport_FS(USBD_HID_GetPos(), TX_CHANNELS+1);
+		USBD_CUSTOM_HID_SendReport_FS(USBD_HID_GetPos(), 5);
 	}
 }
