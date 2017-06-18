@@ -86,7 +86,7 @@ void serial_putc( uint8_t c ){
 #endif
 
 int isSyncFrame(uint32_t time){
-	return time > 15000;
+	return time > 5000;
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim){
